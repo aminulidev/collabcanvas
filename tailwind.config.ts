@@ -18,6 +18,12 @@ const config = {
       },
     },
     extend: {
+      spacing: {
+        '166': '41.5rem',
+      },
+      backgroundImage: {
+        'home-hero': "url('/images/home_banner_image.png')",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -52,6 +58,9 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        overlay: {
+          DEFAULT: "hsl(var(--overlay))",
+        }
       },
       borderRadius: {
         lg: "var(--radius)",
