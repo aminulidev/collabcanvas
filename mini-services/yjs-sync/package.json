@@ -1,0 +1,13 @@
+{
+  "name": "yjs-sync-service",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --hot index.ts"
+  },
+  "dependencies": {
+    "yjs": "13.6.32",
+    "y-protocols": "1.0.7",
+    "lib0": "0.2.117"
+  }
+}
