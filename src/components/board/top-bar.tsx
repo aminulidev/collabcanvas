@@ -173,50 +173,6 @@ function TopBarImpl({ roomId, peers, onOpenImageGen, onClearBoard, onFitView, on
           </Button>
         </div>
 
-        <Button
-          variant={openPanel === 'architecture' ? 'default' : 'outline'}
-          size="sm"
-          onClick={() =>
-            setPanel(openPanel === 'architecture' ? null : 'architecture')
-          }
-          className="gap-1.5"
-        >
-          {openPanel === 'architecture' ? (
-            <PanelLeftClose className="w-3.5 h-3.5" />
-          ) : (
-            <PanelLeft className="w-3.5 h-3.5" />
-          )}
-          <span className="hidden sm:inline">Architecture</span>
-        </Button>
-
-        {/* Schema / Types reference */}
-        <Button
-          variant={openPanel === 'schema' ? 'default' : 'outline'}
-          size="sm"
-          onClick={() =>
-            setPanel(openPanel === 'schema' ? null : 'schema')
-          }
-          className="gap-1.5"
-          title="Data models & Yjs schema reference"
-        >
-          <FileCode className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Schema</span>
-        </Button>
-
-        {/* Performance guide */}
-        <Button
-          variant={openPanel === 'performance' ? 'default' : 'outline'}
-          size="sm"
-          onClick={() =>
-            setPanel(openPanel === 'performance' ? null : 'performance')
-          }
-          className="gap-1.5"
-          title="60 FPS performance optimization guide"
-        >
-          <Gauge className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Perf</span>
-        </Button>
-
         {/* Dark mode toggle */}
         <ThemeToggle />
 

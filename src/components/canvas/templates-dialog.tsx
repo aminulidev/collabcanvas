@@ -52,8 +52,8 @@ export function TemplatesDialog({ open, onOpenChange, doc }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-2xl">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-2xl max-h-[85vh] flex flex-col p-0 overflow-hidden">
+        <DialogHeader className="p-6 pb-4 border-b shrink-0">
           <DialogTitle className="flex items-center gap-2">
             <LayoutTemplate className="w-4 h-4 text-primary" />
             Board Templates
@@ -64,36 +64,38 @@ export function TemplatesDialog({ open, onOpenChange, doc }: Props) {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-          {TEMPLATES.map((tpl, i) => (
-            <motion.button
-              key={tpl.id}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-              onClick={() => insertTemplate(tpl.id)}
-              className="group text-left p-4 rounded-xl border bg-card hover:border-primary/40 hover:shadow-md transition-all"
-            >
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-xl shrink-0">
-                  {tpl.icon}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-sm flex items-center gap-1.5">
-                    {tpl.name}
-                    <Plus className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="flex-1 overflow-y-auto p-6 scrollbar-none">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {TEMPLATES.map((tpl, i) => (
+              <motion.button
+                key={tpl.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                onClick={() => insertTemplate(tpl.id)}
+                className="group text-left p-4 rounded-xl border bg-card hover:border-primary/40 hover:shadow-md transition-all cursor-pointer"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-xl shrink-0">
+                    {tpl.icon}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-                    {tpl.description}
-                  </p>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-sm flex items-center gap-1.5">
+                      {tpl.name}
+                      <Plus className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                      {tpl.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </motion.button>
-          ))}
+              </motion.button>
+            ))}
+          </div>
         </div>
 
-        <div className="flex justify-end pt-2">
-          <Button variant="ghost" onClick={() => onOpenChange(false)}>
+        <div className="flex justify-end p-4 border-t bg-muted/20 shrink-0">
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
             <X className="w-3.5 h-3.5 mr-1.5" />
             Cancel
           </Button>

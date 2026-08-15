@@ -34,6 +34,7 @@ import { useUIStore } from '@/store/ui-store'
 import type { Tool } from '@/types/canvas'
 import { useUndoRedo } from '@/hooks/use-undo-redo'
 import { cn } from '@/lib/utils'
+import { useIsMobile } from '@/hooks/use-mobile'
 import {
   Tooltip,
   TooltipContent,
@@ -86,10 +87,10 @@ function ToolbarImpl({ undoManager, onAddImage }: ToolbarProps) {
         initial={{ x: -20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-1 p-1.5 rounded-2xl bg-card/90 backdrop-blur-md border shadow-lg"
+        className="absolute z-20 flex p-1.5 rounded-2xl bg-card/90 backdrop-blur-md border shadow-lg scrollbar-none left-1/2 -translate-x-1/2 bottom-12 md:left-4 md:top-1/2 md:-translate-y-1/2 md:bottom-auto md:translate-x-0 flex-row md:flex-col gap-1 max-w-[calc(100%-2rem)] md:max-w-none max-h-[calc(100%-2rem)] md:max-h-[calc(100%-2rem)] overflow-x-auto md:overflow-y-auto"
       >
         {/* Undo / Redo */}
-        <div className="flex gap-0.5 px-0.5 pb-1.5 border-b">
+        <div className="flex gap-0.5 px-0.5 pb-0 pr-1.5 border-r md:pb-1.5 md:pr-0.5 md:border-b md:border-r-0 flex-row">
           <ToolbarButton
             label="Undo"
             shortcut="⌘Z"
@@ -109,7 +110,7 @@ function ToolbarImpl({ undoManager, onAddImage }: ToolbarProps) {
         </div>
 
         {/* Tools */}
-        <div className="flex flex-col gap-0.5">
+        <div className="flex flex-row md:flex-col gap-0.5">
           {TOOLS.map((tool) => (
             <ToolbarButton
               key={tool.id}
@@ -130,7 +131,7 @@ function ToolbarImpl({ undoManager, onAddImage }: ToolbarProps) {
         </div>
 
         {/* Toggles */}
-        <div className="flex flex-col gap-0.5 pt-1.5 border-t">
+        <div className="flex flex-row md:flex-col gap-0.5 pt-0 pl-1.5 border-l md:pt-1.5 md:pl-0 md:border-t md:border-l-0">
           <ToolbarButton
             label={showGrid ? 'Hide grid' : 'Show grid'}
             active={showGrid}
@@ -155,7 +156,7 @@ function ToolbarImpl({ undoManager, onAddImage }: ToolbarProps) {
         </div>
 
         {/* Help */}
-        <div className="flex flex-col gap-0.5 pt-1.5 border-t">
+        <div className="flex flex-row md:flex-col gap-0.5 pt-0 pl-1.5 border-l md:pt-1.5 md:pl-0 md:border-t md:border-l-0">
           <ToolbarButton
             label="Keyboard shortcuts"
             shortcut="?"
@@ -189,6 +190,7 @@ function ToolbarButton({
   onClick,
   children,
 }: ToolbarButtonProps) {
+  const isMobile = useIsMobile()
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -196,7 +198,7 @@ function ToolbarButton({
           onClick={onClick}
           disabled={disabled}
           className={cn(
-            'w-9 h-9 rounded-xl flex items-center justify-center transition-all',
+            'w-9 h-9 rounded-xl flex items-center justify-center transition-all shrink-0',
             'hover:bg-accent hover:text-accent-foreground',
             'disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent',
             active && 'bg-primary text-primary-foreground shadow-sm',
@@ -206,7 +208,7 @@ function ToolbarButton({
           {children}
         </button>
       </TooltipTrigger>
-      <TooltipContent side="right" className="flex items-center gap-2">
+      <TooltipContent side={isMobile ? 'top' : 'right'} className="flex items-center gap-2">
         <span>{label}</span>
         {shortcut && (
           <kbd className="ml-1 px-1 py-0.5 rounded bg-muted text-[10px] font-mono">

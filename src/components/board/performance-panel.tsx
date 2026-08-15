@@ -11,8 +11,8 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Gauge, Layers, Cpu, Zap, Eye, MousePointer2 } from 'lucide-react'
 import { useUIStore } from '@/store/ui-store'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 
 const VIEWPORT_CULLING_CODE = `// ── Viewport Culling Algorithm ────────────────────────────────
 // Prevents rendering or updating DOM nodes that sit outside the
@@ -152,9 +152,9 @@ export function PerformancePanel() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 320, damping: 34 }}
-            className="absolute right-0 top-0 bottom-0 z-50 w-full sm:w-[600px] bg-card border-l shadow-2xl flex flex-col"
+            className="absolute right-0 top-0 bottom-0 z-50 w-full sm:w-[600px] bg-card border-l shadow-2xl flex flex-col overflow-hidden"
           >
-            <header className="flex items-center justify-between px-5 py-4 border-b bg-gradient-to-r from-primary/5 to-transparent">
+            <header className="flex items-center justify-between px-5 py-4 border-b bg-gradient-to-r from-primary/5 to-transparent shrink-0">
               <div>
                 <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground font-semibold">
                   <Gauge className="w-3.5 h-3.5" />
@@ -166,14 +166,13 @@ export function PerformancePanel() {
               </div>
               <button
                 onClick={() => setPanel(null)}
-                className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-accent transition-colors"
+                className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-accent transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </header>
 
-            <ScrollArea className="flex-1">
-              <div className="px-5 py-5 space-y-8 text-sm leading-relaxed">
+            <div className="flex-1 overflow-y-auto px-5 py-6 space-y-8 text-sm leading-relaxed scrollbar-none">
                 {/* Intro */}
                 <section>
                   <p className="text-muted-foreground">
@@ -272,8 +271,14 @@ export function PerformancePanel() {
   // Cursor-centered zoom is the default behaviour
 />`}</CodeBlock>
                 </Section>
-              </div>
-            </ScrollArea>
+            </div>
+
+            <footer className="px-5 py-3.5 border-t bg-muted/20 flex justify-end shrink-0">
+              <Button size="sm" variant="outline" onClick={() => setPanel(null)}>
+                <X className="w-3.5 h-3.5 mr-1.5" />
+                Close Panel
+              </Button>
+            </footer>
           </motion.aside>
         </>
       )}

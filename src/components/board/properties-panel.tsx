@@ -116,6 +116,9 @@ export function PropertiesPanel({ doc }: { doc: Y.Doc | null }) {
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 40, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+          onPointerDown={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
           className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-64 max-h-[80vh] overflow-y-auto rounded-2xl bg-card/95 backdrop-blur-md border shadow-xl"
         >
           {/* Header */}

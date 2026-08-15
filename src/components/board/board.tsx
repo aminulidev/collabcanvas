@@ -27,9 +27,6 @@ import { Canvas } from '@/components/canvas/canvas'
 import { Toolbar } from '@/components/canvas/toolbar'
 import { TopBar } from '@/components/board/top-bar'
 import { CursorOverlay } from '@/components/collaboration/cursor-overlay'
-import { ArchitecturePanel } from '@/components/board/architecture-panel'
-import { SchemaPanel } from '@/components/board/schema-panel'
-import { PerformancePanel } from '@/components/board/performance-panel'
 import { ShortcutsOverlay } from '@/components/board/shortcuts-overlay'
 import { PropertiesPanel } from '@/components/board/properties-panel'
 import { EdgePropertiesPanel } from '@/components/board/edge-properties-panel'
@@ -554,9 +551,6 @@ export function Board({ roomId }: BoardProps) {
             peers={awareness.peers}
           />
         )}
-        <ArchitecturePanel />
-        <SchemaPanel />
-        <PerformancePanel />
         <ShortcutsOverlay />
         {!presentationMode && (
           <NodeContextMenu

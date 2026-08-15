@@ -86,11 +86,18 @@ export function useCanvasNodes(doc: Y.Doc | null): CanvasNodesApi {
       // Set the guard so any onNodesChange triggered by this state
       // update does NOT write back to Yjs (avoiding echo + redo clears).
       isApplyingRemoteRef.current = true
-      const next: Node[] = []
-      nodesMap.forEach((ymap) => {
-        next.push(yMapToCanvasNode(ymap as Y.Map<unknown>) as unknown as Node)
+      setNodes((curr) => {
+        const next: Node[] = []
+        nodesMap.forEach((ymap) => {
+          const node = yMapToCanvasNode(ymap as Y.Map<unknown>) as unknown as Node
+          const prev = curr.find((n) => n.id === node.id)
+          if (prev && prev.selected) {
+            node.selected = true
+          }
+          next.push(node)
+        })
+        return next
       })
-      setNodes(next)
       // Clear the guard after a short delay — React Flow fires dimension
       // changes on subsequent frames as it re-measures nodes, so a
       // single rAF isn't enough. 150ms covers ~9 frames at 60fps.
@@ -100,11 +107,18 @@ export function useCanvasNodes(doc: Y.Doc | null): CanvasNodesApi {
     }
     const refreshEdges = () => {
       isApplyingRemoteRef.current = true
-      const next: Edge[] = []
-      edgesMap.forEach((ymap) => {
-        next.push(yMapToCanvasEdge(ymap as Y.Map<unknown>) as unknown as Edge)
+      setEdges((curr) => {
+        const next: Edge[] = []
+        edgesMap.forEach((ymap) => {
+          const edge = yMapToCanvasEdge(ymap as Y.Map<unknown>) as unknown as Edge
+          const prev = curr.find((e) => e.id === edge.id)
+          if (prev && prev.selected) {
+            edge.selected = true
+          }
+          next.push(edge)
+        })
+        return next
       })
-      setEdges(next)
       setTimeout(() => {
         isApplyingRemoteRef.current = false
       }, 150)
@@ -236,8 +250,11 @@ export function useCanvasNodes(doc: Y.Doc | null): CanvasNodesApi {
       doc.transact(() => {
         nodesMap.set(node.id, canvasNodeToYMap(node))
       }, doc.clientID)
-      // Observer will refresh state; but also set locally for immediacy.
-      setNodes((curr) => [...curr, node as unknown as Node])
+      // Check if already added by synchronous observer to prevent duplicate keys
+      setNodes((curr) => {
+        if (curr.some((n) => n.id === node.id)) return curr
+        return [...curr, node as unknown as Node]
+      })
     },
     [doc]
   )
@@ -249,7 +266,11 @@ export function useCanvasNodes(doc: Y.Doc | null): CanvasNodesApi {
       doc.transact(() => {
         edgesMap.set(edge.id, canvasEdgeToYMap(edge))
       }, doc.clientID)
-      setEdges((curr) => [...curr, edge as unknown as Edge])
+      // Check if already added by synchronous observer to prevent duplicate keys
+      setEdges((curr) => {
+        if (curr.some((e) => e.id === edge.id)) return curr
+        return [...curr, edge as unknown as Edge]
+      })
     },
     [doc]
   )
